@@ -10,7 +10,6 @@ import usuariosRoutes from './routes/usuarios.js';
 
 //servidor principal y representa toda la app
 const app = express();
-hola
 
 //habilitar cours
 app.use(cors());
