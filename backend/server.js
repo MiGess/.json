@@ -4,9 +4,10 @@ import express from 'express'; // framework de nodejs principal para servidor y 
 import path from 'path'; // permite manejar rutas y direcciones
 import { fileURLToPath } from 'url'; // permire recrear el directorio  __dirname en modulos ES6
 
-//imporar rutas
-import productRoutes from './routes/productos.js';
+//imporar rutas api
+import productosRoutes from './routes/productos.js';
 import usuariosRoutes from './routes/usuarios.js';
+import { error } from 'console';
 
 //servidor principal y representa toda la app
 const app = express();
@@ -31,7 +32,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 //middleware para manejar rutas no definidas en el backend
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ message: 'Error en el servidor', details: err.message });
+  res.status(500).json({ error: 'Error en el servidor', details: err.message });
 });
 
 //ejecutar servidor

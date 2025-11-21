@@ -1,3 +1,4 @@
+import { error } from 'console';
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
@@ -11,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //crear la ruta que va hacia la base de datos .json
-const dbpath = path.join(__dirname, '../data/dat.json.json');
+const dbpath = path.join(__dirname, '../data/data.json');
 
 //funcion para leer la base de datos .json
 function leerDB() {
@@ -31,7 +32,8 @@ function leerDB() {
 // uncion para guardad datos en data.json
 function guardarDB(data) {
     try {
-        fs.writeFileSync(dbpath, JSON.stringify(data, null, 2), "utf-8");} catch (err) {
+        fs.writeFileSync(dbpath, JSON.stringify(data, null, 2), "utf-8");
+    } catch (err) {
         throw new Error('Error writing database: ' + err.message);
     }
 }
@@ -64,3 +66,34 @@ router.post('/', (req, res, next) => {
         next(err);
     }
 });
+
+// put actualizar usuario
+router.put("/:id", (req, res, next) => {
+    try {
+        const db = leerDB();
+        const id = Number(req.params.id);
+        let encontrado = false;
+        db.usuarios = db.usuarios.map(u => {
+            if (u.id === id){
+                encontrado = true;
+                return { ...u, ...req.body };
+            }
+            return u;
+        });
+        if (!encontrado) return res.status(400).json({ error: "Usuario no encontrado" });
+        guardarDB(db);
+        res.json({ mensaje: "Usuario actualizado" });
+    } catch (err) {
+        next(err);
+    }
+});
+router.delete("/:id", (req, res, next)=>{
+    try{
+        const db =leerDB();
+        const id = Number(req, params.id);
+        const inicial = db.usuario.filter(u => u.id !== id);
+        
+    }
+}
+
+export default router;
